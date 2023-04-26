@@ -17,6 +17,7 @@ jobs:
           ruby-version: '3.1'
       - name: Install Fastlane
         run: gem install fastlane
+        run: bundle update
       - name: Install Flutter
         uses: subosito/flutter-action@v2.10.0
       - run: flutter --version
