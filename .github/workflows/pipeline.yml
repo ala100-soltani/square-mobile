@@ -17,6 +17,9 @@ jobs:
           ruby-version: '3.1'
       - name: Install Fastlane
         run: gem install fastlane
+      - name: Setup Firebase CLI
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        
       - name: Install Flutter
         uses: subosito/flutter-action@v2.10.0
       - run: flutter --version
@@ -26,7 +29,7 @@ jobs:
  #       run: fastlane test
      # - name: Analyze code
        # run: fastlane analyze
-      - name: Bundle update
+      - name: Bundle install
         working-directory: ./android
         run: bundle update
       - name: Build the APK
