@@ -69,7 +69,8 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               _buildHeader(isKeyboardOpen),
-              _buildEmailField(context),
+              _buildForm(context),
+              /* _buildEmailField(context),
               const Padding(
                 padding: EdgeInsets.only(top: 12),
               ),
@@ -84,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const Padding(
                 padding: EdgeInsets.only(top: 14),
-              ),
+              ), */
             ],
           ),
         ),
@@ -227,5 +228,46 @@ class _LoginPageState extends State<LoginPage> {
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  Widget _buildForm(BuildContext context) {
+    return Container(
+      //set color to black if the system is in dark mode
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.black
+            : Colors.white,
+        borderRadius: BorderRadius.circular(4.0),
+        boxShadow: const <BoxShadow>[
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10.0,
+            offset: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      child: Form(
+        child: Column(
+          children: <Widget>[
+            _buildEmailField(context),
+            const Padding(
+              padding: EdgeInsets.only(top: 12),
+            ),
+            _buildPasswordField(context),
+            const Padding(
+              padding: EdgeInsets.only(top: 14),
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 36,
+              child: _buildLoginButton(),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 14),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
