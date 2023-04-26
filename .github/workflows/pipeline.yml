@@ -17,8 +17,6 @@ jobs:
           ruby-version: '3.1'
       - name: Install Fastlane
         run: gem install fastlane
-      - name: Bundle update
-        run: bundle update
       - name: Install Flutter
         uses: subosito/flutter-action@v2.10.0
       - run: flutter --version
@@ -28,6 +26,9 @@ jobs:
  #       run: fastlane test
      # - name: Analyze code
        # run: fastlane analyze
+      - name: Bundle update
+        working-directory: ./android
+        run: bundle update
       - name: Build and deliver to testers
         working-directory: ./android
         run: bundle exec fastlane deliver_android
