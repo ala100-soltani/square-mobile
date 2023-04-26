@@ -1,0 +1,4 @@
+lane :firebase_deploy do
+    gradle(task: "clean assembleRelease")
+    sh("firebase appdistribution:distribute --release-notes 'New release' --apk app/build/outputs/apk/release/app-release.apk")
+  end
