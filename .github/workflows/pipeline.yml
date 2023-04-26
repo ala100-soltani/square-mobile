@@ -19,7 +19,8 @@ jobs:
       - name: install firebase tool
         run: |
           yarn global add firebase-tools
-          echo "::add-path::$(yarn global bin)"
+          echo "FIREBASE_TOOLS=$(yarn global bin)/firebase-tools" >> "$GITHUB_ENV"
+
 
       - name: Install Fastlane
         run: gem install fastlane
