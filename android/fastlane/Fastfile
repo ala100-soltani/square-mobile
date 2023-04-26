@@ -7,7 +7,7 @@ platform :android do
         build_type: 'Release'
       )
       firebase_app_distribution(
-      apk_path: "app/build/outputs/apk/release/app-release.apk",
+      apk_path: "../build/app/outputs/apk/release/app-release.apk",
       app: ENV["FIREBASE_APP_ID"],
       firebase_cli_token: ENV["FIREBASE_TOKEN"],
       groups: "testers",
