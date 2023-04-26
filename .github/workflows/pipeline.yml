@@ -18,9 +18,8 @@ jobs:
       - name: Install Fastlane
         run: gem install fastlane
       - name: Install Flutter
-        uses: subosito/flutter-action@v1
-        with:
-          flutter-version: 'stable'
+        uses: subosito/flutter-action@v2.10.0
+      - run: flutter --version
       - name: Install dependencies
         run: flutter pub get
 #      - name: Run tests
