@@ -1,8 +1,7 @@
 platform :android do
   lane :firebase_deploy do
     begin
-      gradle(task: "clean assembleRelease")
- 
+      sh("flutter build apk --release")
       firebase_app_distribution(
       apk_path: "../build/app/outputs/apk/release/app-release.apk",
       app: ENV["FIREBASE_APP_ID"],
