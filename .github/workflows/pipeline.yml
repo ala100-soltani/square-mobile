@@ -28,6 +28,6 @@ jobs:
        # run: fastlane analyze
       - name: Build and deliver to testers
         working-directory: ./android
-        run: fastlane deliver_android
+        run: bundle exec fastlane deliver_android
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
