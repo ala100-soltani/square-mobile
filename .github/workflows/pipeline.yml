@@ -1,0 +1,29 @@
+name: Continuous Integration and Delivery
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Fastlane
+        run: gem install fastlane
+      - name: Install Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: 'stable'
+      - name: Install dependencies
+        run: flutter pub get
+#      - name: Run tests
+ #       run: fastlane test
+      - name: Analyze code
+        run: fastlane analyze
+      - name: Build and deliver to testers
+        run: fastlane deliver_android
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
