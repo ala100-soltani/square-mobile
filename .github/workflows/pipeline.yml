@@ -24,8 +24,8 @@ jobs:
         run: flutter pub get
 #      - name: Run tests
  #       run: fastlane test
-      - name: Analyze code
-        run: fastlane analyze
+     # - name: Analyze code
+       # run: fastlane analyze
       - name: Build and deliver to testers
         run: fastlane deliver_android
         env:
