@@ -1,5 +1,5 @@
 platform :android do
-  lane :closed_beta do
+  lane :firebase_deploy do
     begin
       gradle(task: "clean")
       gradle(
