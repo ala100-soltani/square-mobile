@@ -31,6 +31,6 @@ jobs:
         run: bundle update
       - name: Build and deliver to testers
         working-directory: ./android
-        run: bundle exec fastlane firebase_deploy
+        run: bundle exec fastlane android firebase_deploy
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
