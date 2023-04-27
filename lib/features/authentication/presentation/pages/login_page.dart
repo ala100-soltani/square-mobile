@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:square/features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:square/injection_container.dart';
 
+import '../widgets/login_form.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -15,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailEditingController = TextEditingController();
   final TextEditingController _passwordEditingController =
       TextEditingController();
+  bool rememberUser = false;
 
   final FocusNode _emailNode = FocusNode();
   final FocusNode _passwordNode = FocusNode();
@@ -46,179 +49,36 @@ class _LoginPageState extends State<LoginPage> {
       onTap: () => FocusScope.of(context).requestFocus(_viewNode),
       child: Scaffold(
         key: _scaffoldKey,
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle.dark.copyWith(),
-          child: _buildBody(context),
+        body: Container(
+          //background image
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/ccircles.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle.dark.copyWith(),
+            child: _buildBody(context),
+          ),
         ),
       ),
     );
   }
 
   BlocProvider<AuthenticationBloc> _buildBody(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     final bool isKeyboardOpen = (MediaQuery.of(context).viewInsets.bottom > 0);
     return BlocProvider<AuthenticationBloc>(
       create: (_) => sl<AuthenticationBloc>(),
-      child: Container(
-        height: size.height,
-        width: size.width,
-        padding: const EdgeInsets.all(5),
+      child: Center(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              _buildHeader(isKeyboardOpen),
-              _buildForm(context),
-              /* _buildEmailField(context),
-              const Padding(
-                padding: EdgeInsets.only(top: 12),
-              ),
-              _buildPasswordField(context),
-              const Padding(
-                padding: EdgeInsets.only(top: 14),
-              ),
-              SizedBox(
-                width: double.infinity,
-                height: 36,
-                child: _buildLoginButton(),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 14),
-              ), */
+              LoginForm(context: context),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeader(bool isKeyboardOpen) {
-    if (!isKeyboardOpen) {
-      return Column(
-        children: const <Widget>[
-          Padding(
-            padding: EdgeInsets.only(top: 74),
-          ),
-          SizedBox(
-            width: 60,
-            height: 60,
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 20),
-          ),
-          Text(
-            "Login",
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 14),
-          ),
-        ],
-      );
-    }
-    return const Padding(
-      padding: EdgeInsets.only(top: 74),
-    );
-  }
-
-  BlocBuilder _buildLoginButton() {
-    return BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      builder: (context, state) {
-        if (state is NotLoggedState ||
-            state is ErrorState ||
-            state is AuthenticationInitial) {
-          if (state is ErrorState) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              debugPrint("ErrorState : ${state.message}");
-            });
-          }
-          return ElevatedButton(
-            key: const Key("login"),
-            onPressed: () {
-              BlocProvider.of<AuthenticationBloc>(context).add(
-                LoginEvent(
-                  _emailEditingController.text,
-                  _passwordEditingController.text,
-                ),
-              );
-            },
-            child: const Text(
-              "LOGIN",
-            ),
-          );
-        } else if (state is LoadingState) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            debugPrint("LoadingState");
-          });
-
-          return const Center(child: CircularProgressIndicator());
-        } else if (state is LoggedState) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            debugPrint("logged in");
-            Navigator.pushNamedAndRemoveUntil(
-                context, "/entreprises", (route) => false);
-          });
-        }
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
-  }
-
-  TextFormField _buildEmailField(BuildContext context) {
-    return TextFormField(
-      focusNode: _emailNode,
-      controller: _emailEditingController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(),
-        ),
-        filled: true,
-        labelText: "Email*",
-      ),
-      onFieldSubmitted: (term) {
-        _fieldFocusChange(context, _emailNode, _passwordNode);
-      },
-    );
-  }
-
-  TextFormField _buildPasswordField(BuildContext context) {
-    return TextFormField(
-      focusNode: _passwordNode,
-      controller: _passwordEditingController,
-      obscureText: _obscureText,
-      keyboardType: TextInputType.visiblePassword,
-      decoration: InputDecoration(
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.0),
-          borderSide: const BorderSide(),
-        ),
-        filled: true,
-        labelText: "Password*",
-        suffixIcon: IconButton(
-          icon: const Icon(Icons.remove_red_eye),
-          onPressed: () {
-            setState(() {
-              _obscureText = !_obscureText;
-            });
-          },
         ),
       ),
     );
@@ -228,46 +88,5 @@ class _LoginPageState extends State<LoginPage> {
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
-  }
-
-  Widget _buildForm(BuildContext context) {
-    return Container(
-      //set color to black if the system is in dark mode
-      decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? Colors.black
-            : Colors.white,
-        borderRadius: BorderRadius.circular(4.0),
-        boxShadow: const <BoxShadow>[
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10.0,
-            offset: Offset(0.0, 0.0),
-          ),
-        ],
-      ),
-      child: Form(
-        child: Column(
-          children: <Widget>[
-            _buildEmailField(context),
-            const Padding(
-              padding: EdgeInsets.only(top: 12),
-            ),
-            _buildPasswordField(context),
-            const Padding(
-              padding: EdgeInsets.only(top: 14),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 36,
-              child: _buildLoginButton(),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 14),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
