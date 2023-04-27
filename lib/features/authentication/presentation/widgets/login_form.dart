@@ -16,6 +16,7 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _passwordEditingController =
       TextEditingController();
   bool rememberUser = false;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(context) {
@@ -37,6 +38,7 @@ class _LoginFormState extends State<LoginForm> {
       ),
       child: SingleChildScrollView(
         child: Form(
+          key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -124,14 +126,7 @@ class _LoginFormState extends State<LoginForm> {
                         ),
                       ),
                       child: TextButton(
-                        onPressed: () {
-                          BlocProvider.of<AuthenticationBloc>(context).add(
-                            LoginEvent(
-                              _emailEditingController.text,
-                              _passwordEditingController.text,
-                            ),
-                          );
-                        },
+                        onPressed: validateFormThenLogin,
                         child: const Padding(
                           padding: EdgeInsets.symmetric(vertical: 16.0),
                           child: Text(
@@ -161,5 +156,18 @@ class _LoginFormState extends State<LoginForm> {
         ),
       ),
     );
+  }
+
+  void validateFormThenLogin() {
+    final validate = _formKey.currentState!.validate();
+
+    if (validate) {
+      BlocProvider.of<AuthenticationBloc>(context).add(
+        LoginEvent(
+          _emailEditingController.text,
+          _passwordEditingController.text,
+        ),
+      );
+    }
   }
 }
