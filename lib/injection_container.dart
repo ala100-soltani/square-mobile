@@ -1,11 +1,9 @@
 import 'package:get_it/get_it.dart';
-import 'package:square/core/network/network_info.dart';
 import 'package:square/features/authentication/data/datasources/auth_remote_source.dart';
 import 'package:square/features/authentication/data/repositories/authentication_repository.dart';
 import 'package:square/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:square/features/authentication/domain/usecases/login_usecase.dart';
 import 'package:square/features/authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:data_connection_checker/data_connection_checker.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:square/features/entreprise/data/datasources/entreprise_remote_source.dart';
@@ -62,13 +60,6 @@ Future<void> init() async {
       client: sl(),
     ),
   );
-
-  //Core
-  sl.registerLazySingleton<NetworkInfo>(
-    () => NetworkInfoImpl(dataConnectionChecker: sl()),
-  );
-
-  sl.registerLazySingleton(() => DataConnectionChecker());
 
   sl.registerLazySingleton(() => http.Client());
 }

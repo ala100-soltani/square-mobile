@@ -1,0 +1,15 @@
+platform :android do
+  lane :firebase_deploy do
+    begin
+      sh("flutter build apk --release")
+      firebase_app_distribution(
+      apk_path: "../build/app/outputs/apk/release/app-release.apk",
+      app: ENV["FIREBASE_APP_ID"],
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+      groups: "testers",
+      release_notes: "Git commit: #{last_git_commit[:abbreviated_commit_hash]}",
+    )
+
+    end
+  end
+end
