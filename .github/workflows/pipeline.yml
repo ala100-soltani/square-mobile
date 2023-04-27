@@ -1,36 +1,36 @@
-name: Continuous Integration and Delivery
+#name: Continuous Integration and Delivery
 
-on:
-  push:
-    branches:
-      - main
+#on:
+ # push:
+    #branches:
+      #- main
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@ec02537da5712d66d4d50a0f33b7eb52773b5ed1
-        with:
-          ruby-version: '3.1'
+#jobs:
+ # build:
+ #   runs-on: ubuntu-latest
+  #  steps:
+  #    - name: Checkout code
+    #    uses: actions/checkout@v2
+    #  - name: Set up Ruby
+    #    uses: ruby/setup-ruby@ec02537da5712d66d4d50a0f33b7eb52773b5ed1
+     #   with:
+      #    ruby-version: '3.1'
+#
+     # - name: install firebase tool
+      #  run: |
+      #    yarn global add firebase-tools
+       #   echo "FIREBASE_TOOLS=$(yarn global bin)/firebase-tools" >> "$GITHUB_ENV"
 
-      - name: install firebase tool
-        run: |
-          yarn global add firebase-tools
-          echo "FIREBASE_TOOLS=$(yarn global bin)/firebase-tools" >> "$GITHUB_ENV"
 
+     # - name: Install Fastlane
+       # run: gem install fastlane
 
-      - name: Install Fastlane
-        run: gem install fastlane
-
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2.10.0
-      - run: flutter --version
-
-      - name: Install dependencies
-        run: flutter pub get
+      #- name: Install Flutter
+      #  uses: subosito/flutter-action@v2.10.0
+      #- run: flutter --version
+#
+      #- name: Install dependencies
+       # run: flutter pub get
 
 #      - name: Run tests
  #       run: fastlane test
@@ -38,25 +38,25 @@ jobs:
        # run: fastlane analyze
 
 
-      - name: Bundle install
-        working-directory: ./android
-        run: bundle install
+      #- name: Bundle install
+      #  working-directory: ./android
+       # run: bundle install
 
-      - name: Build the APK
-        run: flutter build apk
+     # - name: Build the APK
+      #  run: flutter build apk
 
-      - name: Upload artifact to Github
-        uses: actions/upload-artifact@v1
-        with:
-          name: release-apk
-          path: build/app/outputs/apk/release/app-release.apk
+      #- name: Upload artifact to Github
+       # uses: actions/upload-artifact@v1
+       # with:
+        #  name: release-apk
+        #  path: build/app/outputs/apk/release/app-release.apk
           
-      - name: Build and deliver to testers
-        working-directory: ./android
-        run: bundle exec fastlane android firebase_deploy
-        env:
-          FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
-          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+     # - name: Build and deliver to testers
+        #working-directory: ./android
+        #run: bundle exec fastlane android firebase_deploy
+       # env:
+        #  FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
+         # FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
 
         
 
